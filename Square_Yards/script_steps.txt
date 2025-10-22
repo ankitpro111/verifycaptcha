@@ -1,0 +1,40 @@
+
+FOR SQUARE YARD PROJECT
+
+
+Once we have Results from Google Query for particular cities
+
+Step for collecting upuntil raws data
+ {city_name}
+    /query_{city_name}_all_sources_sqy.ndjson    
+
+1. Run the Scrapper.py for collecting projects listing for cities
+    - {city_name}
+2. Runs the Google API based on projects lisiting 
+    - {city_name}
+
+3. run the "filter_all_sources.py" for file Google Results
+    - result stored in {city_name}/sources #followed by "{sources_name}.ndjson"
+
+4. filter the matched_urls results from square_yards projects
+    
+        Housing: "filter_urls_housing.py"
+        - results store in {city_name}/unique_urls_sqy_housing.json
+
+        Magicbricks: "filter_urls_mb.py"
+        - results store in {city_name}/unique_urls_sqy_mb.json
+
+        Nobroker: "filter_urls_nobroker.py"
+        - results store in {city_name}/unique_urls_sqy_nb.json
+
+        99acres: "filter_urls_99acres.py"
+        - results store in {city_name}/unique_urls_sqy_99acres.json
+
+5. runs the scrappers for different sources for collect raw data
+   - results store in /{city_name}/raw_{city_name}_sources.ndjson
+
+Other steps
+
+- Once we have rent-sale listing,  map the list with invidiuval square_yards projects
+- Generate the Units data with filted rent-sale listing based on units
+- pushed data to firestore

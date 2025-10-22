@@ -1,0 +1,89 @@
+{
+  "proxies": {
+    "enabled": false,
+    "pool_size": 10,
+    "rotation_strategy": "round_robin",
+    "health_check_interval": 1800,
+    "max_failures": 3,
+    "timeout": 30,
+    "list": [
+      {
+        "host": "proxy1.example.com",
+        "port": 8080,
+        "protocol": "http",
+        "username": null,
+        "password": null
+      }
+    ]
+  },
+  "user_agents": {
+    "rotation_enabled": true,
+    "list": [
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15",
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    ]
+  },
+  "sessions": {
+    "max_requests_per_session": 100,
+    "session_timeout_minutes": 60,
+    "cookie_persistence": true,
+    "homepage_visit_required": true,
+    "realistic_headers": true
+  },
+  "rate_limiting": {
+    "enabled": true,
+    "base_delay": 30,
+    "max_delay": 600,
+    "backoff_factor": 2.0,
+    "max_retries": 5,
+    "reset_after_successes": 3,
+    "human_like_delays": {
+      "min": 5,
+      "max": 15
+    }
+  },
+  "captcha_handling": {
+    "detection_patterns": [
+      "verifycaptcha",
+      "captcha",
+      "recaptcha",
+      "hcaptcha"
+    ],
+    "content_indicators": [
+      "Please verify you are human",
+      "Complete the captcha",
+      "Security check"
+    ],
+    "auto_solve_enabled": false,
+    "ocr_enabled": false,
+    "browser_fallback": true
+  },
+  "browser_emulation": {
+    "enabled": false,
+    "headless": true,
+    "browser_type": "chrome",
+    "window_size": [1920, 1080],
+    "page_load_timeout": 30,
+    "element_wait_timeout": 10,
+    "max_sessions": 5,
+    "session_reuse": true
+  },
+  "scraping": {
+    "max_workers": 5,
+    "request_timeout": 30,
+    "retry_on_timeout": true,
+    "save_progress_interval": 100,
+    "output_format": "ndjson",
+    "include_metadata": true
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file_enabled": true,
+    "console_enabled": true,
+    "log_file": "scraper.log"
+  }
+}

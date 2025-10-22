@@ -1,0 +1,4 @@
+- Take file "project_bangalore_sy.ndjson" if exists - on Drive
+- Take File "query_bangalore_all_sources_sqy.ndjson" if exists on Drive
+- install necessary library 
+- Execute - "python3 file_name.py"

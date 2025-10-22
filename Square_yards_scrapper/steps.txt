@@ -1,0 +1,6 @@
+- update the urls with respective city urls 
+  e.g. https://www.squareyards.com/new-projects-in-bangalore --> https://www.squareyards.com/new-projects-in-mumbai
+- run the listing code first
+- if need run the filter for unmaatched urls -> filter_urls.py
+- run the scrapper for scrap the project and rent-sale listing of projects
+
