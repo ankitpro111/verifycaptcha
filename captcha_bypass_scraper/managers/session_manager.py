@@ -1,7 +1,6 @@
 """
 Session management component for maintaining browser-like sessions.
 
-This module will be implemented in task 4.
 """
 
 from ..core.base_interfaces import BaseManager
