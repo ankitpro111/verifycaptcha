@@ -1,7 +1,7 @@
 """
 Proxy pool management component.
 
-This module will be implemented in task 3.
+
 """
 
 from ..core.base_interfaces import BaseManager
