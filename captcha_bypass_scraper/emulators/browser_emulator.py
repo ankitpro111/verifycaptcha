@@ -1,7 +1,7 @@
-"""
+    """
 Browser emulation component for complex captcha scenarios.
 
-This module will be implemented in task 6.
+
 """
 
 from ..core.base_interfaces import BaseComponent
