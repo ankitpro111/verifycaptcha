@@ -119,7 +119,7 @@ class CaptchaHandler(BaseHandler):
         Args:
             response: HTTP response to analyze
             
-        Returns:
+        Returns: 
             bool: True if captcha is detected
         """
         result = self._detect_captcha_from_response(response)

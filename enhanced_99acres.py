@@ -249,6 +249,128 @@ def raw_scrapper(url):
         if not result["raw_data"]["basicDetails"] and not result["raw_data"]["components"]:
             print(f"⚠️ No meaningful data extracted from {url}")
             return None
+        
+        # Extract property listings from components section
+        components_data = result["raw_data"]["components"]
+        if components_data:
+            try:
+                print(f"🏠 Extracting property listings from: {url}")
+                
+                # Initialize property listings structure
+                result["property_listings"] = {
+                    "rental_properties": [],
+                    "resale_properties": []
+                }
+                
+                # Initialize extraction summary
+                extraction_summary = {
+                    "total_rental_found": 0,
+                    "total_resale_found": 0,
+                    "successful_rental_extractions": 0,
+                    "successful_resale_extractions": 0,
+                    "failed_extractions": 0,
+                    "extraction_errors": []
+                }
+                
+                # Extract rental properties
+                if 'rentalProperties' in components_data:
+                    rental_component = components_data['rentalProperties']
+                    if isinstance(rental_component, dict) and 'data' in rental_component:
+                        rental_data = rental_component['data']
+                        if isinstance(rental_data, list):
+                            extraction_summary["total_rental_found"] = len(rental_data)
+                            print(f"📋 Found {len(rental_data)} rental properties")
+                            
+                            for rental_item in rental_data:
+                                if isinstance(rental_item, dict) and 'seoUrl' in rental_item:
+                                    try:
+                                        # Create property data structure
+                                        property_data = {
+                                            "property_url": f"https://www.99acres.com{rental_item['seoUrl']}",
+                                            "unit_type": rental_item.get('unitType', 'Not specified'),
+                                            "size": rental_item.get('area', 'Not specified'),
+                                            "price": rental_item.get('rent', 'Not specified'),
+                                            "type": "rent",
+                                            "posted_date": "Not specified",
+                                            "posted_by": "Not specified",
+                                            "source_project_url": url,
+                                            "extraction_timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+                                        }
+                                        
+                                        result["property_listings"]["rental_properties"].append(property_data)
+                                        extraction_summary["successful_rental_extractions"] += 1
+                                        
+                                    except Exception as e:
+                                        extraction_summary["failed_extractions"] += 1
+                                        extraction_summary["extraction_errors"].append(f"Failed to process rental property: {str(e)}")
+                
+                # Extract resale properties
+                if 'resaleProperties' in components_data:
+                    resale_component = components_data['resaleProperties']
+                    if isinstance(resale_component, dict) and 'data' in resale_component:
+                        resale_data = resale_component['data']
+                        if isinstance(resale_data, list):
+                            extraction_summary["total_resale_found"] = len(resale_data)
+                            print(f"📋 Found {len(resale_data)} resale properties")
+                            
+                            for resale_item in resale_data:
+                                if isinstance(resale_item, dict) and 'seoUrl' in resale_item:
+                                    try:
+                                        # Create property data structure
+                                        property_data = {
+                                            "property_url": f"https://www.99acres.com{resale_item['seoUrl']}",
+                                            "unit_type": resale_item.get('unitType', 'Not specified'),
+                                            "size": resale_item.get('area', 'Not specified'),
+                                            "price": resale_item.get('price', 'Not specified'),
+                                            "type": "sale",
+                                            "posted_date": "Not specified",
+                                            "posted_by": "Not specified",
+                                            "source_project_url": url,
+                                            "extraction_timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+                                        }
+                                        
+                                        result["property_listings"]["resale_properties"].append(property_data)
+                                        extraction_summary["successful_resale_extractions"] += 1
+                                        
+                                    except Exception as e:
+                                        extraction_summary["failed_extractions"] += 1
+                                        extraction_summary["extraction_errors"].append(f"Failed to process resale property: {str(e)}")
+                
+                # Add extraction summary to result
+                result["extraction_summary"] = extraction_summary
+                
+                total_properties = extraction_summary["successful_rental_extractions"] + extraction_summary["successful_resale_extractions"]
+                print(f"✅ Property extraction completed for {url}: {total_properties} properties extracted")
+                
+            except Exception as e:
+                print(f"❌ Error during property extraction for {url}: {e}")
+                # Still return the basic project data even if property extraction fails
+                result["property_listings"] = {
+                    "rental_properties": [],
+                    "resale_properties": []
+                }
+                result["extraction_summary"] = {
+                    "total_rental_found": 0,
+                    "total_resale_found": 0,
+                    "successful_rental_extractions": 0,
+                    "successful_resale_extractions": 0,
+                    "failed_extractions": 0,
+                    "extraction_errors": [f"Property extraction failed: {str(e)}"]
+                }
+        else:
+            print(f"ℹ️ No components section found in {url}, skipping property extraction")
+            result["property_listings"] = {
+                "rental_properties": [],
+                "resale_properties": []
+            }
+            result["extraction_summary"] = {
+                "total_rental_found": 0,
+                "total_resale_found": 0,
+                "successful_rental_extractions": 0,
+                "successful_resale_extractions": 0,
+                "failed_extractions": 0,
+                "extraction_errors": []
+            }
             
         return result
 
